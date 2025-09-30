@@ -121,15 +121,15 @@ class GameManager {
         this.#board = new Gameboard();
         this.#player = 1;
 
-        const A11 = document.querySelector(".container li:nth-child(1)");
-        const A21 = document.querySelector(".container li:nth-child(2)");
-        const A31 = document.querySelector(".container li:nth-child(3)");
-        const A12 = document.querySelector(".container li:nth-child(4)");
-        const A22 = document.querySelector(".container li:nth-child(5)");
-        const A32 = document.querySelector(".container li:nth-child(6)");
-        const A13 = document.querySelector(".container li:nth-child(7)");
-        const A23 = document.querySelector(".container li:nth-child(8)");
-        const A33 = document.querySelector(".container li:nth-child(9)");
+        const A11 = document.querySelector(".gameboard li:nth-child(1)");
+        const A21 = document.querySelector(".gameboard li:nth-child(2)");
+        const A31 = document.querySelector(".gameboard li:nth-child(3)");
+        const A12 = document.querySelector(".gameboard li:nth-child(4)");
+        const A22 = document.querySelector(".gameboard li:nth-child(5)");
+        const A32 = document.querySelector(".gameboard li:nth-child(6)");
+        const A13 = document.querySelector(".gameboard li:nth-child(7)");
+        const A23 = document.querySelector(".gameboard li:nth-child(8)");
+        const A33 = document.querySelector(".gameboard li:nth-child(9)");
 
         A11.addEventListener('click', (e) => { this.makeMove(0, 0, e) });
         A21.addEventListener('click', (e) => { this.makeMove(1, 0, e) });
@@ -140,12 +140,24 @@ class GameManager {
         A13.addEventListener('click', (e) => { this.makeMove(0, 2, e) });
         A23.addEventListener('click', (e) => { this.makeMove(1, 2, e) });
         A33.addEventListener('click', (e) => { this.makeMove(2, 2, e) });
+
+        const RB = document.querySelector(".restart");
+        RB.addEventListener('click', (e) => { this.restartGame() });
+    }
+
+    restartGame() {
+        this.#board = new Gameboard();
+        this.#player = 1;
+
+        const list = document.querySelectorAll("li");
+        for (let i = 0; i < list.length; i++) {
+            list[i].style.backgroundColor = 'white';
+        }
     }
 
     makeMove(x, y, e) {
         if (this.#board.checkIfFree(x, y) && !this.#board.gameOver()) {
             this.#board.write(x, y, this.#player);
-            console.log(e.target.style);
 
             if (this.#player === 1) {
                 e.target.style.backgroundColor = 'blue';
@@ -155,7 +167,6 @@ class GameManager {
             }
 
             if (this.#board.checkIfWin(x, y, this.#player)) {
-                console.log("Player " + this.#player + " wins!");
                 this.#board.setOver();
                 return;
             }
